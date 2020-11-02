@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import cv2
+import pickle
 
 class DataLoader:
     def __init__(self):
@@ -26,3 +27,7 @@ class DataLoader:
     def debugDisplay(self,image):
         plt.imshow(image, cmap='gray')  # graph it
         plt.show()
+
+    def loadPickle(self):
+        with open('serialized.pkl', 'rb') as f:
+            data = pickle.load(f)
