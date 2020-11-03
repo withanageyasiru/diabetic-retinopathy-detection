@@ -6,16 +6,18 @@ class Train:
     learning_rate = None
     num_epochs = None
     model_name = None
+    batch_size = None
 
     def __init__(self, x_train,y_train,model):
         super().__init__()        
         self.learning_rate = model.config["learning_rate"]
         self.num_epochs = model.config["num_epochs"]
         self.model_name =  model.config["model_name"]
+        self.batch_size = model.config["batch_size"]
         self.train(x_train,y_train,model.model)
 
     def train(self,x_train,y_train,model):
-        history = model.fit(x_train, y_train, batch_size=32, epochs=self.num_epochs, validation_split=0.3)
+        history = model.fit(x_train, y_train, batch_size=self.batch_size, epochs=self.num_epochs, validation_split=0.3)
         model.save("Classifier\\build\\" + self.model_name)
         self.plotDrafs(history,self.num_epochs)
 

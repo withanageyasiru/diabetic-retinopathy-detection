@@ -17,6 +17,8 @@ cmake_build/
 tensorflow/contrib/cmake/_build/
 .idea/**
 /build/
+train/
+test/
 [Bb]uild/
 /tensorflow/core/util/version_info.cc
 /tensorflow/python/framework/fast_tensor_util.cpp

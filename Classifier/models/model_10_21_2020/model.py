@@ -17,31 +17,27 @@ class Model:
         
 
 
-    def createModel(self):
+    def createModel(self,):
         
         cnn4 = Sequential()
-        cnn4.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(28,28,1)))
-        cnn4.add(BatchNormalization())
+        cnn4.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(224, 224, 3)))
+        # cnn4.add(BatchNormalization())
 
         # cnn4.add(Conv2D(32, kernel_size=(3, 3), activation='relu'))
         # cnn4.add(BatchNormalization())
-        # cnn4.add(MaxPooling2D(pool_size=(2, 2)))
-        # cnn4.add(Dropout(0.25))
+        cnn4.add(MaxPooling2D(pool_size=(2, 2)))
+        cnn4.add(Dropout(0.25))
 
         # cnn4.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
         # cnn4.add(BatchNormalization())
         # cnn4.add(Dropout(0.25))
 
         cnn4.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
-        cnn4.add(BatchNormalization())
+        # cnn4.add(BatchNormalization())
         cnn4.add(MaxPooling2D(pool_size=(2, 2)))
         cnn4.add(Dropout(0.25))
 
         cnn4.add(Flatten())
-
-        cnn4.add(Dense(512, activation='relu'))
-        cnn4.add(BatchNormalization())
-        cnn4.add(Dropout(0.5))
 
         cnn4.add(Dense(128, activation='relu'))
         cnn4.add(BatchNormalization())
