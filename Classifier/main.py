@@ -1,18 +1,26 @@
 
 from dataloder.DataLoader import DataLoader
+from dataloder.LoadPickle import LoadPickle
 from preprocess.preprocess import Preprocess
 from models.model_10_14_2020.model import Model
 from trainer.train import Train
 from predict.predict import Predict
 
 def main():
-    print("main")
-    # data = DataLoader()   
-    # x_train,y_train = data.loadData("Classifier\data\Train\gaussian_filtered_images")
-    # preprocessor = Preprocess()
-    # x_train,y_train = preprocessor.Preprocess(x_train,y_train)
-    # model = Model()
-    # train = Train( x_train,y_train,model)
+    GET_RAW_DATA = False
+    TRAIN = False
+    
+    if (GET_RAW_DATA):
+        train_data = DataLoader().loadData()        
+        preprocessor = Preprocess()
+        preprocessor.preprocess(train_data)
+
+    x_train, y_train = LoadPickle().loadPickle()
+
+    if (TRAIN):
+        model = Model()
+        train = Train( x_train,y_train,model)
+
     predict = Predict()
 
     
