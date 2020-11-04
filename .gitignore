@@ -19,6 +19,7 @@ tensorflow/contrib/cmake/_build/
 /build/
 train/
 test/
+processed_data/
 [Bb]uild/
 /tensorflow/core/util/version_info.cc
 /tensorflow/python/framework/fast_tensor_util.cpp
