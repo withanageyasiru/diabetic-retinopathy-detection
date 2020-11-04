@@ -18,7 +18,7 @@ class Train:
 
     def train(self,x_train,y_train,model):
         history = model.fit(x_train, y_train, batch_size=self.batch_size, epochs=self.num_epochs, validation_split=0.3)
-        model.save("Classifier\\build\\" + self.model_name)
+        model.save("build/" + self.model_name)
         self.plotDrafs(history,self.num_epochs)
 
     def plotDrafs(self,history,epochs):

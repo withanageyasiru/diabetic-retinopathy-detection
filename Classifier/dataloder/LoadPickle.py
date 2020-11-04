@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 class LoadPickle:
-    PIC_PATH = "Classifier\processed_data\data.pickle"
+    PIC_PATH = "processed_data/data.pickle"
     def __init__(self):
         super().__init__()
 
