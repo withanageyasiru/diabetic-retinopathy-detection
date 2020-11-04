@@ -5,7 +5,7 @@ import pandas as pd
 
 class Preprocess:
     
-    PIC_PATH = "Classifier\processed_data\\data.pickle"
+    PIC_PATH = "processed_data/data.pickle"
 
     def __init__ (self):
         print("preprocessing")

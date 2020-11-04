@@ -16,7 +16,7 @@ class Predict:
         # e7578d8dba72,0
         # e76a9cbb2a8c,3
         IMG_SIZE = 224  # 50 in txt-based
-        
+
         img_array = cv2.imread(filepath)  # read in the image, convert to grayscale
         img = cv2.cvtColor(img_array, cv2.COLOR_BGR2RGB)
         return img.reshape(-1, IMG_SIZE, IMG_SIZE, 3)
@@ -25,6 +25,6 @@ class Predict:
 
 
     def predict(self):
-        model = tf.keras.models.load_model("Classifier\\build\model_10_14_2020")
-        prediction = model.predict([self.prepare('Classifier\data\Train\gaussian_filtered_images\e724866f5084.png')])  # REMEMBER YOU'RE PASSING A LIST OF THINGS YOU WISH TO PREDICT
+        model = tf.keras.models.load_model("build/model_10_14_2020")
+        prediction = model.predict([self.prepare('data/Train/gaussian_filtered_images/e724866f5084.png')])  # REMEMBER YOU'RE PASSING A LIST OF THINGS YOU WISH TO PREDICT
         print(prediction)
