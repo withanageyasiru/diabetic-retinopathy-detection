@@ -4,25 +4,30 @@ from preprocess.preprocess import Preprocess
 from models.model_10_14_2020.model import Model
 from trainer.train import Train
 from predict.predict import Predict
+import configparser
 
 
 def main():
-    GET_RAW_DATA = True
-    TRAIN = True
+    config = configparser.ConfigParser()
+    config.read('config.ini')
 
-    if (GET_RAW_DATA):
-        train_data = DataLoader().loadData()
+    get_raw_data = bool(config.get('MAIN', 'get_raw_data'))
+    train = bool(config.get('MAIN', 'train'))
+
+    if get_raw_data:
+        train_data = DataLoader().load_data()
         preprocessor = Preprocess()
         preprocessor.preprocess(train_data)
 
-    x_train, y_train = LoadPickle().loadPickle()
+    x_train, y_train = LoadPickle().load_pickle()
 
-    if (TRAIN):
+    if train:
         model = Model()
-        train = Train(x_train, y_train, model)
+        Train(x_train, y_train, model)
 
-    predict = Predict()
+    Predict()
 
 
 if __name__ == "__main__":
     main()
+

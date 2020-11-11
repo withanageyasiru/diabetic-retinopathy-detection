@@ -3,24 +3,28 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import cv2
+import configparser
 
 
 class DataLoader:
-    NUM_OF_IMAGES = 301
-    CSV_PATH = "data/Train/train.csv"
-    DEFAULT_DATA_PATH = "data/Train/gaussian_filtered_images"
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+
+    NUM_OF_IMAGES = int(config.get('DATA_LOADER', 'NUM_OF_IMAGES'))
+    CSV_PATH = config.get('DATA_LOADER', 'CSV_PATH')
+    DEFAULT_DATA_PATH = config.get('DATA_LOADER', 'DEFAULT_DATA_PATH')
 
     def __init__(self):
-        print("dataloader")
+        print("data_loader")
 
-    def loadData(self):
+    def load_data(self):
         train_df = []
         images = []
 
         data = pd.read_csv(self.CSV_PATH)
         data = data.head(self.NUM_OF_IMAGES)
-        fileDir = os.path.dirname(os.path.realpath('__file__'))
-        folder_path = os.path.join(fileDir, self.DEFAULT_DATA_PATH)
+        file_dir = os.path.dirname(os.path.realpath('__file__'))
+        folder_path = os.path.join(file_dir, self.DEFAULT_DATA_PATH)
         file_names = data["id_code"].values
         for filename in file_names:
             filename = filename + ".png"
@@ -33,6 +37,7 @@ class DataLoader:
         train_df = [x_train, y_train]
         return train_df
 
-    def debugDisplay(self, image):
+    def debug_display(self, image):
         plt.imshow(image, cmap='gray')  # graph it
         plt.show()
+
