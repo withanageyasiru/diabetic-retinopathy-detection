@@ -11,14 +11,12 @@ class Model:
     model = None
 
     def __init__(self):
-        self.createModel()
-        with open("Classifier\models\model_10_14_2020\hyperP.json", "r") as f:
+        self.create_model()
+        with open("Classifier/models/model_10_14_2020/hyperP.json", "r") as f:
             self.config = json.load(f)
-        
 
-
-    def createModel(self):
-        print("model is crating")
+    def create_model(self):
+        print("Model is crating")
         model = Sequential()
 
         model.add(Conv2D(256, (3, 3), input_shape=(224, 224, 3)))
@@ -36,9 +34,7 @@ class Model:
         model.add(Dense(5))
         model.add(Activation('sigmoid'))
 
-        model.compile(loss='binary_crossentropy',
-                    optimizer='adam',
-                    metrics=['accuracy'])
+        model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
         
         model.summary()
 

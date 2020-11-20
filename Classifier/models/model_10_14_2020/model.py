@@ -1,23 +1,24 @@
 import json
 import tensorflow as tf
-from tensorflow.keras.models import Sequential 
+from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
 from tensorflow.keras.callbacks import TensorBoard
+import configparser
 
 
 class Model:
+    config = configparser.ConfigParser()
+    config.read('config.ini')
 
     config = None
     model = None
 
     def __init__(self):
-        self.createModel()
+        self.create_model()
         with open("models/model_10_14_2020/hyperP.json", "r") as f:
             self.config = json.load(f)
-        
 
-
-    def createModel(self):
+    def create_model(self):
         print("model is crating")
         model = Sequential()
 
@@ -39,7 +40,7 @@ class Model:
         model.compile(loss='binary_crossentropy',
                     optimizer='adam',
                     metrics=['accuracy'])
-        
+
         model.summary()
 
         self.model = model
