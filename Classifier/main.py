@@ -19,13 +19,13 @@ def main():
         preprocessor = Preprocess()
         preprocessor.preprocess(train_data)
 
-    x_train, y_train = LoadPickle().load_pickle()
-
-    if train:
-        model = Model()
-        Train(x_train, y_train, model)
-
-    Predict()
+    # x_train, y_train = LoadPickle().load_pickle()
+    #
+    # if train:
+    #     model = Model()
+    #     Train(x_train, y_train, model)
+    #
+    # Predict()
 
 
 if __name__ == "__main__":
