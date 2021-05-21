@@ -25,3 +25,5 @@ class Preprocess:
         plt.imshow(image, cmap='gray')  # graph it
         plt.show()
 
+
+
