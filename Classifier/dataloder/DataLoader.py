@@ -20,20 +20,28 @@ class DataLoader:
     def load_data(self):
         train_df = []
         images = []
+        lables = []
 
         data = pd.read_csv(self.CSV_PATH)
         data = data.head(self.NUM_OF_IMAGES)
         file_dir = os.path.dirname(os.path.realpath('__file__'))
         folder_path = os.path.join(file_dir, self.DEFAULT_DATA_PATH)
-        file_names = data["id_code"].values
-        for filename in file_names:
-            filename = filename + ".png"
-            file_path = os.path.join(folder_path, filename)
-            img = cv2.imread(file_path)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            images.append(img)
-        x_train = np.array(images, dtype=float)
-        y_train = np.array(data["diagnosis"].values)
+        file_names = data["image"].values
+        image_names = os.listdir(self.DEFAULT_DATA_PATH)
+        for filename in image_names:
+             filename = filename.split('.')[0]
+             if filename in file_names:
+                tem_filename = filename
+                filename = filename + ".jpeg"
+                file_path = os.path.join(folder_path, filename)
+                img = cv2.imread(file_path)
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                images.append(img)
+                # index = data.index[data['image'] == filename].tolist()
+                index = np.where(data['image'] == tem_filename )[0][0]
+                lables.append(data.iloc[index]['level'])
+        x_train = np.array(images)
+        y_train = np.array(lables)
         train_df = [x_train, y_train]
         return train_df
 
