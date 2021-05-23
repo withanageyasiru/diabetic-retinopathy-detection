@@ -5,14 +5,15 @@ from tensorflow.keras.layers import Dense, Dropout, Flatten
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, BatchNormalization
 
 
-class Model:
+class ModelCombine:
 
     config = None
     model = None
+    model_name = 'model_combine_10_14_2021'
 
     def __init__(self):
         self.createModel()
-        with open("Classifier\models\model_10_21_2020\hyperP.json", "r") as f:
+        with open("models/model_combine/hyperP.json", "r") as f:
             self.config = json.load(f)
         
 
@@ -50,3 +51,12 @@ class Model:
               metrics=['accuracy'])
 
         self.model = cnn4
+        self.save_model_json()
+
+    def save_model_json(self):
+        # serialize model to JSON
+        model_json = self.model.to_json()
+        with open(self.model_name + ".json", "w") as json_file:
+            json_file.write(model_json)
+
+model = ModelCombine()

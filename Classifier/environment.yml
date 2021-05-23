@@ -56,4 +56,4 @@ dependencies:
     - urllib3==1.26.4
     - werkzeug==2.0.1
     - wrapt==1.12.1
-prefix: C:\Users\Yasiru\Anaconda3\envs\fyp
+
