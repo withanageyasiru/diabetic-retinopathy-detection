@@ -4,6 +4,7 @@ import pickle
 import pandas as pd
 
 
+
 class Preprocess:
     
     PIC_PATH = "processed_data/data.pickle"
@@ -11,12 +12,15 @@ class Preprocess:
     def __init__ (self):
         print("pre processing")
 
+
+
     def preprocess(self, train_data):
         # self.debug_display(x_train[5])
         # train_data[0] = train_data[0] / 225
         train_data[1] = pd.get_dummies(train_data[1])
 
         image = train_data[0][1]
+
 
         return
 
