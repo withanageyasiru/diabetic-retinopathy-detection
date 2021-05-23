@@ -6,12 +6,15 @@ import pandas as pd
 from preprocess.GLCM_features import createGLCMImage
 
 
+
 class Preprocess:
     
     PIC_PATH = "processed_data/data.pickle"
 
     def __init__ (self):
         print("pre processing")
+
+
 
     def preprocess(self, train_data):
         # self.debug_display(x_train[5])
@@ -21,6 +24,7 @@ class Preprocess:
         image = train_data[0][:5]
         data = createGLCMImage(image)
         # print(data)
+
 
         return
 
