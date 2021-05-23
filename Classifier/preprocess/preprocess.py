@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import pickle
 import pandas as pd
 
+from preprocess.GLCM_features import createGLCMImage
+
 
 class Preprocess:
     
@@ -14,9 +16,11 @@ class Preprocess:
     def preprocess(self, train_data):
         # self.debug_display(x_train[5])
         # train_data[0] = train_data[0] / 225
-        train_data[1] = pd.get_dummies(train_data[1])
+        # train_data[1] = pd.get_dummies(train_data[1])
 
-        image = train_data[0][1]
+        image = train_data[0][:5]
+        data = createGLCMImage(image)
+        # print(data)
 
         return
 

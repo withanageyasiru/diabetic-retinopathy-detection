@@ -14,10 +14,10 @@ def main():
     get_raw_data = bool(config.get('MAIN', 'get_raw_data'))
     train = bool(config.get('MAIN', 'train'))
 
-    # if get_raw_data:
-    #     train_data = DataLoader().load_data()
-    #     preprocessor = Preprocess()
-    #     preprocessor.preprocess(train_data)
+    if get_raw_data:
+        train_data = DataLoader().load_data()
+        preprocessor = Preprocess()
+        preprocessor.preprocess(train_data)
 
     # x_train, y_train = LoadPickle().load_pickle()
 
