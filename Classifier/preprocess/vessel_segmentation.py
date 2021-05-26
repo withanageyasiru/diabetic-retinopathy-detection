@@ -9,7 +9,7 @@ def vessel_segmentation(img):
 
     # apply morphology
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
-    morph = cv2.morphologyEx(img, cv2.MORPH_DILATE, kernel)
+    morph = cv2.morphologyEx(gray, cv2.MORPH_DILATE, kernel)
 
     # divide gray by morphology image
     division = cv2.divide(gray, morph, scale=255)
