@@ -72,7 +72,7 @@ def preprocess(img):
 #############getROI##############
 ##Image is resized
 ##We take green channel and smooth it
-##Opening is done to remove artifacts, in order to preserve only BRIGHTEST elements
+##fing is done to remove artifacts, in order to preserve only BRIGHTEST elements
 ##Now we get the most bright pixel position
 ##We return that position in a 110x110 window
 ##It is actually a simple way to detect the optic disc, but it works so..

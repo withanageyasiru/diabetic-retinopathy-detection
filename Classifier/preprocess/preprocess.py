@@ -21,6 +21,13 @@ class Preprocess:
 
         image = train_data[0][1]
 
+        #color intensity Component
+        #noise removal
+        #contrast Enhancement
+        #vessel segmentation
+        #optic disk segmentation
+
+
 
         return
 
