@@ -15,7 +15,7 @@ def main():
     train = bool(config.get('MAIN', 'train'))
 
     if get_raw_data:
-        train_data = DataLoader().load_data()
+        train_data = DataLoader().load_data((300,300))
         preprocessor = Preprocess()
         preprocessor.preprocess(train_data)
 

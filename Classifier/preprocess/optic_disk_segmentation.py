@@ -160,44 +160,51 @@ def hough(edged, limm, limM):
     hough_res = hough_circle(edged, hough_radii)
     return hough_circle_peaks(hough_res, hough_radii, total_num_peaks=1)
 
+def remove_optic_disk(image):
 
-parser = argparse.ArgumentParser(description='Optic disc segmentation.')
-parser.add_argument("-f", dest='file', action='store', type=str, help='The image to process.')
-args = parser.parse_args()
 
-print(args.accumulate(args.integers))
+    roi = getROI(image)
+    preprocessed_roi = preprocess(roi)
+
+    # im2, contours, hierarchy = cv2.findContours(segmented, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    ##We get our ROI and then we preprocess it.
+    ##After preprocess, we apply a canny border algorithm
+    ##We dilate the borders in order to make it easy to detect with hough
+
+    edged = canny(preprocessed_roi, 0.22)
+    kernel = np.ones((3, 3), np.uint8)
+    edged = cv2.dilate(edged, kernel, iterations=3)
+    accums, cx, cy, radii = hough(edged, 55, 80)
+    for center_y, center_x, radius in zip(cy, cx, radii):
+        circy, circx = circle_perimeter(center_y, center_x, radius)
+        try:
+            roi[circy, circx] = (220, 20, 20)
+        except:
+            continue
+    #
+    init = np.array([circx, circy]).T
+
+    return preprocessed_roi, roi
+
+
+
+# parser = argparse.ArgumentParser(description='Optic disc segmentation.')
+# parser.add_argument("-f", dest='file', action='store', type=str, help='The image to process.')
+# args = parser.parse_args()
+#
+# print(args.accumulate(args.integers))
 
 ############################
 ##Here we start the process
 ############################
 
-image = cv2.imread('10_left.jpeg')
+image = cv2.imread('../data/Train/13_left.jpeg')
 
-roi = getROI(image)
-preprocessed_roi = preprocess(roi)
-
-# im2, contours, hierarchy = cv2.findContours(segmented, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-##We get our ROI and then we preprocess it.
-##After preprocess, we apply a canny border algorithm
-##We dilate the borders in order to make it easy to detect with hough
-
-edged = canny(preprocessed_roi, 0.22)
-kernel = np.ones((3, 3), np.uint8)
-edged = cv2.dilate(edged, kernel, iterations=3)
-accums, cx, cy, radii = hough(edged, 55, 80)
-for center_y, center_x, radius in zip(cy, cx, radii):
-    circy, circx = circle_perimeter(center_y, center_x, radius)
-    try:
-        roi[circy, circx] = (220, 20, 20)
-    except:
-        continue
-#
-init = np.array([circx, circy]).T
-
-cv2.imshow('Pre-Processed Region of Interest ' + str(i), preprocessed_roi)
-cv2.imshow('Region of Interest ' + str(i), roi)
+preprocessed_roi, roi = remove_optic_disk(image)
 
 ############################
+cv2.imshow('Pre-Processed Region of Interest ', preprocessed_roi)
+cv2.imshow('Region of Interest ', roi)
 
 while (1):
     k = cv2.waitKey(37)

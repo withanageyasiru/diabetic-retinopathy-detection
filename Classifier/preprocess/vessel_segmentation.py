@@ -1,54 +1,47 @@
-from matplotlib import pyplot as plt
 import cv2
 import numpy as np
 
 
-def vessel_segmentation(img):
-    # convert to gray
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+def vessel_segmentation(images):
+    """
 
-    # apply morphology
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
-    morph = cv2.morphologyEx(gray, cv2.MORPH_DILATE, kernel)
+    :param images:
+    :return:
+    """
+    image_set = images.copy()
+    for i, img in enumerate(image_set):
+        # convert to gray
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # divide gray by morphology image
-    division = cv2.divide(gray, morph, scale=255)
+        # apply morphology
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+        morph = cv2.morphologyEx(gray, cv2.MORPH_DILATE, kernel)
 
-    # threshold
-    thresh = cv2.threshold(division, 0, 255, cv2.THRESH_OTSU)[1]
+        # divide gray by morphology image
+        division = cv2.divide(gray, morph, scale=255)
 
-    # invert
-    thresh = 255 - thresh
+        # threshold
+        thresh = cv2.threshold(division, 0, 255, cv2.THRESH_OTSU)[1]
 
-    # find contours and discard contours with small areas
-    mask = np.zeros_like(thresh)
-    contours = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    contours = contours[0] if len(contours) == 2 else contours[1]
+        # invert
+        thresh = 255 - thresh
 
-    area_thresh = 10000
-    for cntr in contours:
-        area = cv2.contourArea(cntr)
-        if area > area_thresh:
-            cv2.drawContours(mask, [cntr], -1, 255, 2)
+        # find contours and discard contours with small areas
+        mask = np.zeros_like(thresh)
+        contours = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours = contours[0] if len(contours) == 2 else contours[1]
 
-    # apply mask to thresh
-    result1 = cv2.bitwise_and(thresh, mask)
-    mask = cv2.merge([mask, mask, mask])
-    result2 = cv2.bitwise_and(img, mask)
+        area_thresh = 10000
+        for cntr in contours:
+            area = cv2.contourArea(cntr)
+            if area > area_thresh:
+                cv2.drawContours(mask, [cntr], -1, 255, 2)
 
-    # # save results
-    # cv2.imwrite('retina_eye_division.jpg', division)
-    # cv2.imwrite('retina_eye_thresh.jpg', thresh)
-    # cv2.imwrite('retina_eye_mask.jpg', mask)
-    # cv2.imwrite('retina_eye_result1.jpg', result1)
-    # cv2.imwrite('retina_eye_result2.jpg', result2)
-    #
-    # # show results
-    # cv2.imshow('morph', morph)
-    # cv2.imshow('division', division)
-    # cv2.imshow('thresh', thresh)
-    # cv2.imshow('mask', mask)
-    # cv2.imshow('result1', result1)
-    # cv2.imshow('result2', result2)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+        # apply mask to thresh
+        # result1 = cv2.bitwise_and(thresh, mask)
+        mask = cv2.merge([mask, mask, mask])
+        result2 = cv2.bitwise_and(img, mask)
+
+        image_set[i] = result2
+
+    return image_set
