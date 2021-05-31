@@ -17,7 +17,7 @@ class DataLoader:
     def __init__(self):
         print("data_loader")
 
-    def load_data(self):
+    def load_data(self, size):
         train_df = []
         images = []
         lables = []
@@ -36,12 +36,13 @@ class DataLoader:
                 file_path = os.path.join(folder_path, filename)
                 img = cv2.imread(file_path)
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                img = cv2.resize(img,size)
                 images.append(img)
                 # index = data.index[data['image'] == filename].tolist()
                 index = np.where(data['image'] == tem_filename )[0][0]
                 lables.append(data.iloc[index]['level'])
-        x_train = np.array(images)
-        y_train = np.array(lables)
+        x_train = np.array(images, dtype=int)
+        y_train = np.array(lables, dtype=int)
         train_df = [x_train, y_train]
         return train_df
 
