@@ -25,6 +25,13 @@ class Preprocess:
         data = createGLCMImage(image)
         # print(data)
 
+        #color intensity Component
+        #noise removal
+        #contrast Enhancement
+        #vessel segmentation
+        #optic disk segmentation
+
+
 
         return
 
