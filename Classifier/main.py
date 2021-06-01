@@ -15,15 +15,15 @@ def main():
     train = bool(config.get('MAIN', 'train'))
 
     if get_raw_data:
-        train_data = DataLoader().load_data((300,300))
+        train_data = DataLoader().load_data((512,512))
         preprocessor = Preprocess()
         preprocessor.preprocess(train_data)
 
-    # x_train, y_train = LoadPickle().load_pickle()
+    x_train, y_train = LoadPickle().load_pickle()
 
     if train:
         model = BaseModel()
-        # Train(x_train, y_train, model)
+        Train(x_train, y_train, model)
 
     # Predict()
 

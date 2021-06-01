@@ -4,7 +4,7 @@
 from __future__ import print_function
 
 from multiprocessing.pool import ThreadPool
-
+from skimage import segmentation
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -230,57 +230,69 @@ def grayStretch(img, m=60.0/255, e=8.0):
     ans = np.array(ans, np.uint8)
     return ans
 
+def vessel_segmentation(image):
+    # Original
+    srcImg = image
+    # srcImg = cv2.imread("../data/Train/photo_2021-06-01_19-08-40.jpg")
 
-# Original
-srcImg = cv2.imread('114_left.jpeg', cv2.IMREAD_ANYDEPTH | cv2.IMREAD_ANYCOLOR)
+    # Calibration chart
+    grountruth = cv2.cvtColor(srcImg.copy(),cv2.COLOR_RGB2GRAY)
+    grayImg = cv2.cvtColor(srcImg.copy(),cv2.COLOR_RGB2GRAY)#cv2.split(srcImg)[1]
+    show(grayImg)
+    # Extract mask
+    ret0, th0 = cv2.threshold(grayImg, 50, 255, cv2.THRESH_BINARY)
+    show(th0)
+    mask = cv2.erode(th0, np.ones((7, 7), np.uint8))
+    # showImg("mask", mask)
 
-# Calibration chart
-grountruth = cv2.imread('114_left.jpeg', cv2.IMREAD_GRAYSCALE)
-grayImg = cv2.split(srcImg)[1]
+    # Gaussian filtering
+    # blurImg = cv2.GaussianBlur(grayImg, (5, 5), 0)
+    # # cv2.imwrite("blurImg.png", blurImg)
+    #
+    # # HE
+    # heImg = cv2.equalizeHist(blurImg)
+    # cv2.imwrite("heImg.png", heImg)
 
-# Extract mask
-ret0, th0 = cv2.threshold(grayImg, 30, 255, cv2.THRESH_BINARY)
-mask = cv2.erode(th0, np.ones((7, 7), np.uint8))
-# showImg("mask", mask)
+    # # CLAHE Light equalization + contrast enhancement
+    # clahe = cv2.createCLAHE(clipLimit=2, tileGridSize=(10, 10))
+    # claheImg = clahe.apply(blurImg)
+    # # cv2.imwrite("claheImg.png", claheImg)
 
-# Gaussian filtering
-blurImg = cv2.GaussianBlur(grayImg, (5, 5), 0)
-# cv2.imwrite("blurImg.png", blurImg)
+    # # Homomorphic filtering Optical equalization
+    # homoImg = homofilter(blurImg)
 
-# HE
-heImg = cv2.equalizeHist(blurImg)
-# cv2.imwrite("heImg.png", heImg)
+    # preMFImg = adjust_gamma(claheImg, gamma=1.5)
+    # filters = build_filters2()
+    # showKern(filters)
+    # gaussMFImg = process(preMFImg, filters)
+    gaussMFImg_mask = pass_mask(mask, grayImg)
+    grayStretchImg = grayStretch(gaussMFImg_mask, m=30.0 / 255, e=8)
 
-# CLAHE Light equalization + contrast enhancement
-clahe = cv2.createCLAHE(clipLimit=2, tileGridSize=(10, 10))
-claheImg = clahe.apply(blurImg)
-# cv2.imwrite("claheImg.png", claheImg)
+    # Binarization
+    ret1, th1 = cv2.threshold(grayStretchImg, 30, 255, cv2.THRESH_OTSU)
+    predictImg = th1.copy()
 
-# Homomorphic filtering Optical equalization
-homoImg = homofilter(blurImg)
+    # predictImg = segmentation.clear_border(predictImg)
 
-preMFImg = adjust_gamma(claheImg, gamma=1.5)
-filters = build_filters2()
-# showKern(filters)
-gaussMFImg = process(preMFImg, filters)
-gaussMFImg_mask = pass_mask(mask, gaussMFImg)
-grayStretchImg = grayStretch(gaussMFImg_mask, m=30.0 / 255, e=8)
+    # print(num)
+    dice = calcDice(predictImg, grountruth)
+    # print(num,'',dice)
+    wtf = np.hstack([srcImg, cv2.cvtColor(grountruth,cv2.COLOR_GRAY2BGR),cv2.cvtColor(predictImg,cv2.COLOR_GRAY2BGR)])
+    # cv2.imwrite(('m%02d' % num)+'.png', wtf)
+    imS = cv2.resize(wtf, (900, 450))
 
-# Binarization
-ret1, th1 = cv2.threshold(grayStretchImg, 30, 255, cv2.THRESH_OTSU)
-predictImg = th1.copy()
+    # cv2.imshow('window result', imS)
+    # cv2.waitKey()
+    # cv2.destroyAllWindows()
 
-# print(num)
-dice = calcDice(predictImg, grountruth)
-# print(num,'',dice)
-wtf = np.hstack([srcImg, cv2.cvtColor(grountruth,cv2.COLOR_GRAY2BGR),cv2.cvtColor(predictImg,cv2.COLOR_GRAY2BGR)])
-# cv2.imwrite(('m%02d' % num)+'.png', wtf)
-imS = cv2.resize(wtf, (900, 450))
-cv2.imshow('window result', imS)
-cv2.waitKey()
-cv2.destroyAllWindows()
+    return  predictImg
 
+# vessel_segmentation(None)
 
+def show(image):
+    cv2.imshow('window result', image)
+    cv2.waitKey()
+    cv2.destroyAllWindows()
 
 
 # def vessel_segmentation(images):

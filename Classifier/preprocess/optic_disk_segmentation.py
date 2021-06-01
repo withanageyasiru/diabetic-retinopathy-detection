@@ -198,7 +198,7 @@ def remove_optic_disk(image):
 ##Here we start the process
 ############################
 
-image = cv2.imread('../data/Train/13_left.jpeg')
+image = cv2.imread('../data/Train/photo_2021-06-01_19-09-28.jpg')
 
 preprocessed_roi, roi = remove_optic_disk(image)
 

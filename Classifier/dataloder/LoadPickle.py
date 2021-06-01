@@ -12,7 +12,7 @@ class LoadPickle:
     def load_pickle(self):
         with open(self.PIC_PATH, 'rb') as f:
             data = pickle.load(f)
-        x_train = np.array(data[0])
+        x_train = data[0]
 
         y_train_encode = pd.get_dummies(data[1]).values
         y_train = np.array(y_train_encode)

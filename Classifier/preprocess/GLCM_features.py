@@ -7,8 +7,9 @@ def createGLCMImage(images):
 
     glcm_images = []
     for img in images:
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        img = cv2.resize(img, (300,300))
+        shape = img.shape
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+        img = cv2.resize(img, (256, 256))
         h,w = img.shape
 
 

@@ -25,11 +25,16 @@ class ModelHemorrhageAndHardExudates:
     def create_model(self):
         print("Model is crating")
         # load model
-        input = Input(shape=(640, 480, 3))
+        input = Input(shape=(512, 512, 3))
         model = VGG16(weights='imagenet', include_top=False, input_tensor=input)
 
+        # mark loaded layers as not trainable
+        for layer in model.layers:
+            layer.trainable = False
+
         # add new classifier layers
-        out = Flatten()(model.layers[-1].output)
+        # out = Flatten()(model.layers[-1].output)
+        out = model.layers[-1].output
         model = Model(input, out)
         model.summary(line_length=150)
 
