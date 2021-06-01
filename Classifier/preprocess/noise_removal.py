@@ -8,8 +8,8 @@ def noise_removal(image):
     :return:
     '''
 
-    for i in range(image.shape[0]):
-        image[i, :, :, :] = cv.medianBlur(image[i, :, :, :], 5)
-        # image[i, :, :, :] = cv.adaptiveThreshold(image[i, :, :, :], 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C,
-        # cv.THRESH_BINARY, 11, 2)
+    # for i in range(image.shape[0]):
+    #     image[i, :, :, :] = cv.medianBlur(image[i, :, :, :], 3)
+    #     # binary_mask = cv.adaptiveThreshold(image[i, :, :, :], 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C,
+    #     # cv.THRESH_BINARY, 11, 2)
     return image
