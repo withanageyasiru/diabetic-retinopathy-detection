@@ -1,12 +1,15 @@
 import cv2
+from tqdm import tqdm
+
 from util.fast_glcm import fast_glcm_std, fast_glcm_max, fast_glcm_entropy
 import numpy as np
 
 
 def createGLCMImage(images):
 
+    print("GLCM Processing...")
     glcm_images = []
-    for img in images:
+    for img in tqdm(images):
         shape = img.shape
         img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
         img = cv2.resize(img, (256, 256))
@@ -24,5 +27,5 @@ def createGLCMImage(images):
         needed_multi_channel_img[:, :, 2] = ent
 
         glcm_images.append(needed_multi_channel_img.astype(int))
-
+    print("GLCM Process Completed")
     return np.array(glcm_images)

@@ -31,10 +31,11 @@ class BaseModel():
 
         # create the input to our final set of layers as the *output* of both
         # the MLP and CNN
-        combinedInput = concatenate([self.__model_microaneurysm.output, self.__model_hemorrhage_and_hard_exudates.output])
+        # combinedInput = concatenate([self.__model_microaneurysm.output, self.__model_hemorrhage_and_hard_exudates.output])
         # our final FC layer head will have two dense layers, the final one
         # being our regression head
-        out = Flatten()(combinedInput)
+        # out = Flatten()(combinedInput)
+        out = Flatten()(self.__model_hemorrhage_and_hard_exudates.output)
         x = Dense(64, activation="relu")(out)
         x = Dense(16, activation="relu")(x)
         x = Dense(5, activation="softmax")(x)
@@ -42,9 +43,11 @@ class BaseModel():
         # input and images on the CNN input, outputting a single value (the
         # predicted price of the house)
         self.model = Model(inputs=[self.__model_microaneurysm.input, self.__model_hemorrhage_and_hard_exudates.input], outputs=x)
+        self.model = Model(inputs=self.__model_hemorrhage_and_hard_exudates.input,
+                           outputs=x)
 
-        opt = Adam(lr=0.001)
-        self.model.compile(optimizer=opt, loss="categorical_crossentropy", metrics=['accuracy'])
+        # opt = Adam(lr=0.001)
+        self.model.compile(optimizer='adam', loss="categorical_crossentropy", metrics=['accuracy'])
         # out = Dense(1, activation='sigmoid')(concatenated)
         # model = Model([digit_a, digit_b], out)
         plot_model(self.model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)

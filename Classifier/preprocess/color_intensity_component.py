@@ -13,10 +13,11 @@ def intensity_component(images):
     #           0, 0, 0.1, 0.1)
     # return image.convert("RGB", matrix)
     """
-
-    images[:, :, :, 0] = np.zeros([images.shape[1], images.shape[2]])
+    print("Intensity component Processing...")
+    images[:, :, :, 0] = images[:, :, :, 1] * 0.966    #np.zeros([images.shape[1], images.shape[2]])
     images[:, :, :, 1] = images[:, :, :, 1] * 0.966
     images[:, :, :, 2] = images[:, :, :, 2] * 0.421
     images = np.uint8(images)
+    print("Intensity component Process Completed")
 
     return images

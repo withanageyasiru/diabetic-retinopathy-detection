@@ -34,6 +34,9 @@ class ModelHemorrhageAndHardExudates:
 
         # add new classifier layers
         # out = Flatten()(model.layers[-1].output)
+        model.layers[-2].trainable = True
+        model.layers[-3].trainable = True
+
         out = model.layers[-1].output
         model = Model(input, out)
         model.summary(line_length=150)

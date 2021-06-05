@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import cv2
 import configparser
+from sklearn.utils import shuffle
 
 from tqdm import tqdm
 
@@ -27,23 +28,25 @@ class DataLoader:
         class_count = [0] * 5
 
         data = pd.read_csv(self.CSV_PATH)
+
+        data = shuffle(data)
         data = data.head(self.NUM_OF_IMAGES)
         file_dir = os.path.dirname(os.path.realpath('__file__'))
         folder_path = os.path.join(file_dir, self.DEFAULT_DATA_PATH)
-        file_names = data["image"].values
+        file_names = data["id_code"].values
         image_names = os.listdir(self.DEFAULT_DATA_PATH)
         for filename in tqdm(image_names):
              filename = filename.split('.')[0]
              if filename in file_names:
-                index = np.where(data['image'] == filename)[0][0]
-                level_ = data.iloc[index]['level']
-                if class_count[level_] < 300:
+                index = np.where(data['id_code'] == filename)[0][0]
+                level_ = data.iloc[index]['diagnosis']
+                if class_count[level_] < 650:
 
                     tem_filename = filename
-                    filename = filename + ".jpeg"
+                    filename = filename + ".png"
                     file_path = os.path.join(folder_path, filename)
                     img = cv2.imread(file_path)
-                    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                    # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
                     img = cv2.resize(img,size)
                     images.append(img)
                     # index = data.index[data['image'] == filename].tolist()
